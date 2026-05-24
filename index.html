@@ -2,7 +2,7 @@
 <html lang="bs">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Šahovski Vikend Sarajevo · 2026</title>
 <meta name="description" content="Šahovski Vikend Sarajevo — blitz turniri svake druge nedjelje u 10:00, SK Sarajevo." />
 <meta name="theme-color" content="#f5efdf" />
@@ -25,9 +25,9 @@
     <span class="yr">2026</span>
   </div>
   <div class="bar-r">
-    <button class="btn" id="icsBtn" title="Preuzmi .ics kalendar"><span class="bi">📅</span><span class="bt">kalendar</span></button>
-    <button class="btn" id="copyBtn"><span class="bi">⧉</span><span class="bt">copy</span></button>
-    <button class="btn btn-solid" id="pdfBtn"><span class="bi">⇣</span><span class="bt">pdf</span></button>
+    <button class="btn" id="icsBtn" title="Preuzmi .ics kalendar" aria-label="Preuzmi kalendar"><span class="bi">📅</span><span class="bt">kalendar</span></button>
+    <button class="btn" id="copyBtn" title="Kopiraj kratki info"><span class="bi">⧉</span><span class="bt">copy</span></button>
+    <button class="btn btn-solid" id="pdfBtn" title="Izvezi PDF"><span class="bi">⇣</span><span class="bt">pdf</span></button>
   </div>
 </header>
 
@@ -47,38 +47,27 @@
         <span>Početak <strong>10:00</strong> · <strong>SK Sarajevo</strong> · upisnina <strong>20 KM</strong>.</span>
       </p>
       <div class="tempo-row">
-        <span class="tp tp-1">3+2 <em>13k</em></span>
+        <span class="tp tp-1">3+2 <em>13k · ~2h</em></span>
         <span class="tp-arr">→</span>
-        <span class="tp tp-2">5+3 <em>11k</em></span>
+        <span class="tp tp-2">5+3 <em>11k · ~3h</em></span>
         <span class="tp-arr">→</span>
-        <span class="tp tp-3">7+3 <em>9k</em></span>
+        <span class="tp tp-3">7+3 <em>9k · ~3h30</em></span>
         <span class="tp-arr tp-loop">↻</span>
       </div>
     </div>
 
-    <aside class="hero-r" id="nextCard">
-      <div class="nc-top">
-        <span class="nc-tag">sljedeći turnir</span>
-        <span class="nc-cd" id="ncCd">—</span>
+    <!-- UPCOMING SLIDER -->
+    <aside class="up-slider" aria-label="Nadolazeći turniri">
+      <header class="us-head">
+        <span class="us-tag"><span class="us-dot"></span>nadolazeći turniri</span>
+        <span class="us-count" id="usCount">—</span>
+      </header>
+      <div class="us-viewport">
+        <button class="us-arr us-arr-l" id="usPrev" aria-label="Prethodni" type="button">‹</button>
+        <div class="us-track" id="usTrack" role="list"></div>
+        <button class="us-arr us-arr-r" id="usNext" aria-label="Sljedeći" type="button">›</button>
       </div>
-      <div class="nc-mid">
-        <div class="nc-l">
-          <div class="nc-dy" id="ncDy">—</div>
-          <div class="nc-day" id="ncDay">—</div>
-          <div class="nc-mo" id="ncMo">—</div>
-        </div>
-        <div class="nc-r">
-          <div class="nc-row"><span>format</span><strong id="ncFmt">—</strong></div>
-          <div class="nc-row"><span>kola</span><strong id="ncRounds">—</strong></div>
-          <div class="nc-row"><span>trajanje</span><strong id="ncDur">—</strong></div>
-          <div class="nc-row"><span>upisnina</span><strong>20 KM</strong></div>
-        </div>
-      </div>
-      <div class="nc-foot">
-        <span class="nf-pair"><span class="nf-k">početak</span><span class="nf-v">10:00</span></span>
-        <span class="nf-sep">·</span>
-        <span class="nf-pair"><span class="nf-k">klub</span><span class="nf-v">SK Sarajevo</span></span>
-      </div>
+      <div class="us-hint">↔ swipe / scroll za više · tap karticu za detalje</div>
     </aside>
   </section>
 
@@ -92,28 +81,28 @@
     <div class="info-c"><strong>≥ 20</strong><span>KM · min nagrada</span></div>
   </section>
 
-  <!-- MAIN -->
+  <!-- MAIN: kalendar (uže) + nagrade (šire) -->
   <section class="main">
 
     <article class="panel pn-cal">
       <header class="ph">
         <span class="ph-no">01</span>
         <h2 class="ph-t">Kalendar</h2>
-        <span class="ph-meta" id="calMeta">— · ned 10:00 · SK Sarajevo</span>
+        <span class="ph-meta" id="calMeta">— · tap za detalje</span>
       </header>
 
       <div class="cal-head">
-        <span>№</span>
-        <span>datum</span>
-        <span>tempo</span>
-        <span>k</span>
-        <span>~t</span>
+        <span class="ch-n">№</span>
+        <span class="ch-dt">datum</span>
+        <span class="ch-fmt">tempo</span>
+        <span class="ch-rd">k</span>
+        <span class="ch-dur">~t</span>
       </div>
 
-      <div class="cal" id="calList"></div>
+      <div class="cal" id="calList" role="list"></div>
 
       <div class="dist">
-        <span class="dist-t">raspodjela:</span>
+        <span class="dist-t">raspodjela tempa:</span>
         <span class="dist-row" data-t="3+2"><b>3+2</b><i class="db"><i class="df"></i></i><u id="d3">—</u></span>
         <span class="dist-row" data-t="5+3"><b>5+3</b><i class="db"><i class="df"></i></i><u id="d5">—</u></span>
         <span class="dist-row" data-t="7+3"><b>7+3</b><i class="db"><i class="df"></i></i><u id="d7">—</u></span>
@@ -124,20 +113,26 @@
       <header class="ph">
         <span class="ph-no">02</span>
         <h2 class="ph-t">Nagrade</h2>
-        <span class="ph-meta">10 — 25 igr · 75 / 25</span>
+        <span class="ph-meta">75 % regularne · 25 % specijalne</span>
       </header>
 
-      <table class="prize">
-        <thead>
-          <tr>
-            <th>igr</th>
-            <th>fond</th>
-            <th><span class="ppc">♚</span> regularne · km</th>
-            <th><span class="ppc">♟</span> spec.</th>
-          </tr>
-        </thead>
-        <tbody id="prizeBody"></tbody>
-      </table>
+      <p class="prize-note">
+        Fond se formira <strong>isključivo</strong> iz upisnina. <em>Specijalne</em> nagrade idu igračima iz <strong>donje polovine</strong> startne liste po rejtingu.
+      </p>
+
+      <div class="prize-wrap">
+        <table class="prize">
+          <thead>
+            <tr>
+              <th class="ph-cn">igrača</th>
+              <th class="ph-cf">fond</th>
+              <th class="ph-cr"><span class="ppc">♚</span> regularne <em>KM</em></th>
+              <th class="ph-cs"><span class="ppc">♟</span> specijalne <em>KM</em></th>
+            </tr>
+          </thead>
+          <tbody id="prizeBody"></tbody>
+        </table>
+      </div>
     </article>
 
   </section>
@@ -147,17 +142,17 @@
     <header class="ph">
       <span class="ph-no">03</span>
       <h2 class="ph-t">Pravila</h2>
-      <span class="ph-meta">pomjeranje · specijalne nagrade</span>
+      <span class="ph-meta">pomjeranje · spec. nagrade</span>
     </header>
 
     <div class="rg">
       <div class="rc">
         <span class="rh">Zauzeta nedjelja</span>
-        <span class="rt">drugi turnir u nedjelju → pomjera se na <strong>subotu istog vikenda</strong></span>
+        <span class="rt">drugi turnir → <strong>subota istog vikenda</strong></span>
       </div>
       <div class="rc">
         <span class="rh">Zauzet cijeli vikend</span>
-        <span class="rt">i subota i nedjelja zauzete → <strong>sljedeći vikend</strong> (nedjelja po pravilu)</span>
+        <span class="rt">i subota i nedjelja zauzete → <strong>sedmicu ranije ili sedmicu kasnije</strong>, prema slobodnoj nedjelji</span>
       </div>
       <div class="rc">
         <span class="rh">Specijalne nagrade</span>
@@ -179,8 +174,50 @@
   <span class="fy">2026</span>
   <span class="fs">·</span>
   <span class="fy">SK Sarajevo</span>
-  <span class="fr">pripremljeno za zajednicu igrača</span>
+  <span class="fr">pripremljeno za ljubitelje šaha</span>
 </footer>
+
+<!-- DETAIL MODAL -->
+<dialog class="detail" id="detail" aria-labelledby="dNo">
+  <div class="d-grip" aria-hidden="true"></div>
+  <button class="d-close" id="dClose" aria-label="Zatvori">×</button>
+
+  <header class="d-head">
+    <div class="d-no" id="dNo">TURNIR</div>
+    <div class="d-status" id="dStatus"></div>
+  </header>
+
+  <section class="d-hero">
+    <div class="d-date">
+      <div class="d-dy" id="dDy">—</div>
+      <div class="d-day" id="dDay">—</div>
+      <div class="d-mo" id="dMo">—</div>
+    </div>
+    <div class="d-meta">
+      <div class="d-row"><span>format</span><strong id="dFmt">—</strong></div>
+      <div class="d-row"><span>kola</span><strong id="dRounds">—</strong></div>
+      <div class="d-row"><span>vrijeme</span><strong id="dTime">—</strong></div>
+      <div class="d-row"><span>trajanje</span><strong id="dDur">—</strong></div>
+      <div class="d-row"><span>klub</span><strong>SK Sarajevo</strong></div>
+      <div class="d-row"><span>upisnina</span><strong>20 KM</strong></div>
+      <div class="d-row"><span>dani do</span><strong id="dDays">—</strong></div>
+    </div>
+  </section>
+
+  <section class="d-orig" id="dOrig" hidden>
+    <div class="do-tag">↗ pomjeren termin</div>
+    <div class="do-grid">
+      <div class="do-pair">
+        <span class="do-k">originalni termin</span>
+        <strong class="do-v" id="dOrigDate">—</strong>
+      </div>
+      <div class="do-pair">
+        <span class="do-k">razlog</span>
+        <strong class="do-v do-reason" id="dReason">—</strong>
+      </div>
+    </div>
+  </section>
+</dialog>
 
 <div class="toast" id="toast" aria-live="polite"></div>
 
