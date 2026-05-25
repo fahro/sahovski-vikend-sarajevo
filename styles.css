@@ -8,9 +8,9 @@
   --paper-3: #e3d7b4;
   --ivory:   #fbf6e7;
   --ink:     #15181a;
-  --ink-2:   #41464a;
-  --ink-3:   #76797d;
-  --ink-4:   #a8aaad;
+  --ink-2:   #3a3e42;
+  --ink-3:   #5e6367;
+  --ink-4:   #969a9e;
   --green:   #1f5240;
   --green-d: #143a2c;
   --clay:    #b95e2f;
@@ -33,8 +33,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--f-sans);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern", "tnum", "ss01";
@@ -234,12 +234,12 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .tp {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--ink);
   border: 1px solid var(--rule-2);
-  padding: 5px 11px 5px 16px;
+  padding: 6px 12px 6px 18px;
   position: relative;
   border-radius: 3px;
 }
@@ -258,11 +258,11 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .tp em {
   font-family: var(--f-mono);
   font-style: normal;
-  font-weight: 400;
-  color: var(--ink-3);
-  font-size: 10px;
-  margin-left: 4px;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  color: var(--ink-2);
+  font-size: 11px;
+  margin-left: 5px;
+  letter-spacing: 0.04em;
 }
 .tp-arr { color: var(--ink-3); font-size: 14px; }
 .tp-loop {
@@ -568,11 +568,11 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .info-c span {
   font-family: var(--f-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 .info-c:nth-child(2) strong { font-size: 18px; }
 
@@ -615,9 +615,9 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .ph-no {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   color: var(--clay);
 }
 .ph-t {
@@ -631,26 +631,26 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .ph-meta {
   margin-left: auto;
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
   text-align: right;
 }
 
 /* ----- CALENDAR (compact) ----- */
 .cal-head {
   display: grid;
-  grid-template-columns: 22px 1fr 44px 22px 36px;
+  grid-template-columns: 22px 1fr 48px 22px 44px;
   gap: 8px;
-  padding: 6px 0;
+  padding: 8px 0;
   font-family: var(--f-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
   border-bottom: 1px solid var(--rule-2);
 }
 .cal-head .ch-rd, .cal-head .ch-dur { text-align: right; }
@@ -658,13 +658,13 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cal { display: block; }
 .cal-row {
   display: grid;
-  grid-template-columns: 22px 1fr 44px 22px 36px;
+  grid-template-columns: 22px 1fr 48px 22px 44px;
   gap: 8px;
-  padding: 8px 4px;
+  padding: 10px 4px;
   margin: 0 -4px;
   border-bottom: 1px solid var(--rule);
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: 14px;
   align-items: center;
   position: relative;
   transition: background .15s ease;
@@ -676,7 +676,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
   border-right: none;
   border-top: none;
   color: inherit;
-  min-height: 40px;
+  min-height: 46px;
 }
 .cal-row:hover, .cal-row:focus-visible {
   background: var(--paper-2);
@@ -684,21 +684,21 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .cal-row:active { background: var(--paper-3); }
 
-.cr-n { color: var(--ink-3); font-size: 10px; font-weight: 600; }
+.cr-n { color: var(--ink-3); font-size: 11px; font-weight: 600; }
 .cr-dt { display: flex; align-items: baseline; gap: 7px; min-width: 0; }
 .cr-dy {
   font-family: var(--f-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-2);
-  width: 22px;
+  width: 24px;
   flex-shrink: 0;
 }
 .cr-day {
   font-family: var(--f-sans);
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.025em;
@@ -707,20 +707,20 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .cr-mo {
   font-family: var(--f-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 .cr-tempo {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--ink);
   position: relative;
-  padding-left: 11px;
+  padding-left: 13px;
 }
 .cr-tempo::before {
   content: "";
@@ -737,17 +737,19 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cr-rd {
   text-align: right;
   font-family: var(--f-mono);
-  font-size: 11px;
-  color: var(--ink-2);
-  font-weight: 500;
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 600;
+  font-feature-settings: "tnum", "lnum";
 }
 .cr-dur {
   text-align: right;
   font-family: var(--f-mono);
-  font-size: 11px;
-  color: var(--ink-3);
+  font-size: 12px;
+  color: var(--ink-2);
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  font-feature-settings: "tnum", "lnum";
 }
 
 /* NEXT */
@@ -818,14 +820,14 @@ button { font: inherit; cursor: pointer; color: inherit; }
   border-radius: 4px;
 }
 .dist-t {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
-.dist-row { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; }
-.dist-row b { font-weight: 700; letter-spacing: 0.04em; color: var(--ink); font-size: 11px; }
+.dist-row { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; }
+.dist-row b { font-weight: 700; letter-spacing: 0.02em; color: var(--ink); font-size: 12px; }
 .db {
   display: inline-block;
   width: 56px;
@@ -845,18 +847,18 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .dist-row[data-t="3+2"] .df { background: var(--clay); }
 .dist-row[data-t="5+3"] .df { background: var(--gold); }
 .dist-row[data-t="7+3"] .df { background: var(--green); }
-.dist-row u { color: var(--ink-2); font-size: 10px; text-decoration: none; font-weight: 600; letter-spacing: 0.05em; }
+.dist-row u { color: var(--ink); font-size: 11px; text-decoration: none; font-weight: 700; letter-spacing: 0.03em; font-feature-settings: "tnum", "lnum"; }
 
 /* ============================================
    PRIZE TABLE (emphasized)
    ============================================ */
 .prize-note {
   font-family: var(--f-sans);
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
   margin-bottom: 12px;
-  padding: 10px 14px;
+  padding: 11px 14px;
   background: var(--ivory);
   border-left: 3px solid var(--green);
   border-radius: 2px;
@@ -874,12 +876,12 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .prize thead th {
   text-align: left;
   font-family: var(--f-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--ink);
-  padding: 12px 8px 12px 0;
+  padding: 13px 8px 13px 0;
   border-bottom: 2px solid var(--rule-2);
   background: var(--paper-2);
   white-space: nowrap;
@@ -888,10 +890,10 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .prize thead th:last-child { text-align: right; padding-right: 12px; }
 .prize thead th em {
   font-style: normal;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--ink-3);
-  letter-spacing: 0.15em;
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
   margin-left: 4px;
 }
 .ppc {
@@ -909,7 +911,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .prize tbody tr:hover { background: var(--paper-2); }
 .prize tbody td {
-  padding: 12px 8px 12px 0;
+  padding: 14px 8px 14px 0;
   vertical-align: middle;
   font-feature-settings: "tnum", "lnum";
 }
@@ -919,7 +921,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .p-n {
   font-family: var(--f-sans);
   font-weight: 700;
-  font-size: 26px;
+  font-size: 28px;
   color: var(--green);
   width: 13%;
   letter-spacing: -0.03em;
@@ -928,7 +930,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .p-f {
   font-family: var(--f-sans);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   color: var(--ink);
   width: 14%;
   letter-spacing: -0.01em;
@@ -937,63 +939,64 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .p-f em {
   font-family: var(--f-mono);
   font-style: normal;
-  font-weight: 500;
-  font-size: 11px;
-  color: var(--ink-3);
-  letter-spacing: 0.15em;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
   margin-left: 4px;
   vertical-align: 1px;
 }
 .p-r {
   font-family: var(--f-mono);
-  font-size: 14px;
-  color: var(--ink-2);
-  letter-spacing: 0.04em;
-  font-weight: 500;
+  font-size: 15px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  font-weight: 600;
 }
 .p-r .first {
   color: var(--green);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 17px;
 }
 .p-s {
   font-family: var(--f-mono);
-  font-size: 13px;
-  color: var(--ink-3);
+  font-size: 14px;
+  color: var(--ink-2);
   text-align: right;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   width: 22%;
-  font-weight: 500;
+  font-weight: 600;
 }
 .p-s .first {
   color: var(--clay);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 @media (max-width: 980px) { .main { grid-template-columns: 1fr; } }
 
 @media (max-width: 560px) {
   .cal-head, .cal-row {
-    grid-template-columns: 22px 1fr 44px 22px;
+    grid-template-columns: 22px 1fr 48px 22px;
     gap: 8px;
   }
   .cal-head .ch-dur, .cr-dur { display: none; }
-  .cal-row { padding: 10px 4px; min-height: 44px; }
-  .cr-day { font-size: 17px; }
-  .cr-tempo { font-size: 11px; }
+  .cal-row { padding: 11px 4px; min-height: 48px; font-size: 14px; }
+  .cr-day { font-size: 19px; }
+  .cr-tempo { font-size: 13px; }
+  .cr-rd { font-size: 13px; }
 
-  .prize thead th { font-size: 11px; padding: 10px 6px 10px 0; }
+  .prize thead th { font-size: 12px; padding: 11px 6px 11px 0; }
   .prize thead th em { display: none; }
-  .prize tbody td { padding: 10px 6px 10px 0; }
-  .p-n { font-size: 22px; }
-  .p-f { font-size: 15px; }
-  .p-f em { font-size: 10px; }
-  .p-r { font-size: 12px; }
-  .p-r .first { font-size: 13px; }
-  .p-s { font-size: 11px; }
-  .p-s .first { font-size: 12px; }
+  .prize tbody td { padding: 12px 6px 12px 0; }
+  .p-n { font-size: 24px; }
+  .p-f { font-size: 17px; }
+  .p-f em { font-size: 11px; }
+  .p-r { font-size: 14px; }
+  .p-r .first { font-size: 15px; }
+  .p-s { font-size: 13px; }
+  .p-s .first { font-size: 14px; }
 }
 
 /* ============================================
@@ -1026,17 +1029,17 @@ button { font: inherit; cursor: pointer; color: inherit; }
 
 .rh {
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--green);
 }
 .rt {
   font-family: var(--f-sans);
   font-weight: 400;
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--ink);
 }
 .rt strong { font-weight: 700; color: var(--green); }
@@ -1259,15 +1262,15 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .d-row:last-child { border-bottom: none; }
 .d-row span {
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 .d-row strong {
   font-family: var(--f-sans);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--ink);
   font-feature-settings: "lnum", "tnum";
