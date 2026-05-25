@@ -3,7 +3,7 @@
    ===================================================== */
 
 const FORMATS = [
-  { label: "3+2", rounds: 13, dur: "2h",     durMin: 120 },
+  { label: "3+2", rounds: 13, dur: "2h30",   durMin: 150 },
   { label: "5+3", rounds: 11, dur: "3h",     durMin: 180 },
   { label: "7+3", rounds:  9, dur: "3h30",   durMin: 210 },
 ];
@@ -459,7 +459,7 @@ function buildShareText() {
     "...",
     "",
     "• Upisnina 20 KM",
-    "• Tempo rotira: 3+2 (13k, ~2h) → 5+3 (11k, ~3h) → 7+3 (9k, ~3h30)",
+    "• Tempo rotira: 3+2 (13k, ~2h30) → 5+3 (11k, ~3h) → 7+3 (9k, ~3h30)",
     "• Fond: 75% regularne · 25% specijalne (donja 50% liste po rejtingu)",
     "• Min. nagrada ≥ 20 KM",
     "• Nedjelja zauzeta → subota istog vikenda",
