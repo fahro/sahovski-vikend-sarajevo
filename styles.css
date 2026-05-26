@@ -159,9 +159,10 @@ button { font: inherit; cursor: pointer; color: inherit; }
    ============================================ */
 .hero {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1fr 1.05fr;
   gap: 16px;
   padding: 6px 0;
+  align-items: stretch;
 }
 
 .hero-l { display: flex; flex-direction: column; justify-content: center; padding: 6px 0; }
@@ -321,17 +322,22 @@ button { font: inherit; cursor: pointer; color: inherit; }
 
 .us-viewport {
   position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
 }
 .us-track {
   display: flex;
   gap: 8px;
-  padding: 12px 12px 8px;
+  padding: 12px 12px 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: rgba(21,24,26,0.2) transparent;
+  flex: 1;
+  align-items: stretch;
 }
 .us-track::-webkit-scrollbar { height: 6px; }
 .us-track::-webkit-scrollbar-track { background: transparent; }
@@ -341,22 +347,22 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 
 .us-card {
-  flex: 0 0 144px;
+  flex: 0 0 158px;
   scroll-snap-align: start;
   background: var(--paper);
   border: 1px solid var(--rule-2);
   border-radius: 5px;
-  padding: 10px 11px 11px;
+  padding: 12px 13px 13px;
   cursor: pointer;
   text-align: left;
   font: inherit;
   color: inherit;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   transition: transform .15s ease, border-color .15s ease, background .15s ease;
   position: relative;
-  min-height: 142px;
+  min-height: 168px;
 }
 .us-card:hover, .us-card:focus-visible {
   transform: translateY(-2px);
@@ -422,7 +428,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .usc-num {
   font-family: var(--f-sans);
-  font-size: 38px;
+  font-size: 46px;
   font-weight: 700;
   color: var(--green);
   letter-spacing: -0.05em;
@@ -449,7 +455,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .usc-fmt {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--ink);
@@ -476,18 +482,18 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .usc-tm {
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ink-2);
   font-feature-settings: "tnum";
   letter-spacing: 0.04em;
-  font-weight: 500;
+  font-weight: 600;
 }
 .usc-cd {
   font-family: var(--f-mono);
-  font-size: 9px;
+  font-size: 10px;
   color: var(--clay);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
