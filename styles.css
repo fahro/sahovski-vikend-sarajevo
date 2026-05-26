@@ -642,13 +642,13 @@ button { font: inherit; cursor: pointer; color: inherit; }
 /* ----- CALENDAR (compact) ----- */
 .cal-head {
   display: grid;
-  grid-template-columns: 26px 1fr 56px 26px 50px;
+  grid-template-columns: 28px 1fr 60px 28px 54px;
   gap: 10px;
-  padding: 10px 0;
+  padding: 11px 0;
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ink-2);
   border-bottom: 1px solid var(--rule-2);
@@ -658,13 +658,13 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cal { display: block; }
 .cal-row {
   display: grid;
-  grid-template-columns: 26px 1fr 56px 26px 50px;
+  grid-template-columns: 28px 1fr 60px 28px 54px;
   gap: 10px;
-  padding: 13px 4px;
+  padding: 15px 4px;
   margin: 0 -4px;
   border-bottom: 1px solid var(--rule);
   font-family: var(--f-mono);
-  font-size: 16px;
+  font-size: 17px;
   align-items: center;
   position: relative;
   transition: background .15s ease;
@@ -676,7 +676,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
   border-right: none;
   border-top: none;
   color: inherit;
-  min-height: 56px;
+  min-height: 62px;
 }
 .cal-row:hover, .cal-row:focus-visible {
   background: var(--paper-2);
@@ -684,21 +684,21 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .cal-row:active { background: var(--paper-3); }
 
-.cr-n { color: var(--ink-3); font-size: 13px; font-weight: 600; font-feature-settings: "tnum", "lnum"; }
-.cr-dt { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+.cr-n { color: var(--ink-3); font-size: 14px; font-weight: 600; font-feature-settings: "tnum", "lnum"; }
+.cr-dt { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 .cr-dy {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--ink-2);
-  width: 28px;
+  width: 30px;
   flex-shrink: 0;
 }
 .cr-day {
   font-family: var(--f-sans);
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.025em;
@@ -707,20 +707,20 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .cr-mo {
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-2);
 }
 .cr-tempo {
   font-family: var(--f-mono);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--ink);
   position: relative;
-  padding-left: 14px;
+  padding-left: 15px;
 }
 .cr-tempo::before {
   content: "";
@@ -737,7 +737,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cr-rd {
   text-align: right;
   font-family: var(--f-mono);
-  font-size: 16px;
+  font-size: 18px;
   color: var(--ink);
   font-weight: 600;
   font-feature-settings: "tnum", "lnum";
@@ -745,7 +745,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cr-dur {
   text-align: right;
   font-family: var(--f-mono);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ink-2);
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -978,14 +978,14 @@ button { font: inherit; cursor: pointer; color: inherit; }
 
 @media (max-width: 560px) {
   .cal-head, .cal-row {
-    grid-template-columns: 26px 1fr 56px 26px;
+    grid-template-columns: 28px 1fr 60px 28px;
     gap: 10px;
   }
   .cal-head .ch-dur, .cr-dur { display: none; }
-  .cal-row { padding: 13px 4px; min-height: 56px; font-size: 16px; }
-  .cr-day { font-size: 24px; }
-  .cr-tempo { font-size: 15px; }
-  .cr-rd { font-size: 16px; }
+  .cal-row { padding: 15px 4px; min-height: 62px; font-size: 17px; }
+  .cr-day { font-size: 27px; }
+  .cr-tempo { font-size: 16px; }
+  .cr-rd { font-size: 18px; }
 
   .prize thead th { font-size: 12px; padding: 11px 6px 11px 0; }
   .prize thead th em { display: none; }
