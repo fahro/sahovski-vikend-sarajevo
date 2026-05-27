@@ -283,8 +283,8 @@ function buildCalendar(items, nextPos) {
   const meta = document.getElementById("calMeta");
   if (meta) meta.textContent = `${items.length} turnira · tap za detalje`;
 
-  const infoCount = document.getElementById("infoCount");
-  if (infoCount) infoCount.textContent = String(items.length);
+  const aboutCount = document.getElementById("aboutCount");
+  if (aboutCount) aboutCount.textContent = String(items.length);
 }
 
 /* =====================================================

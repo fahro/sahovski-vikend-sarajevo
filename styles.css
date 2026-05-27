@@ -1353,6 +1353,221 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 
 /* ============================================
+   ABOUT (Šta je ovo?)
+   ============================================ */
+.about {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px 18px;
+}
+.about-lede {
+  font-family: var(--f-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 4px 0 16px;
+  max-width: 72ch;
+}
+.about-lede strong {
+  font-weight: 700;
+  color: var(--green);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.ac {
+  background: var(--ivory);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.ac:hover {
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+.ac-q {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.ac-a {
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--green);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+.ac-d {
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+
+@media (max-width: 880px) {
+  .about-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .about-grid { grid-template-columns: 1fr; gap: 8px; }
+  .ac { padding: 12px 14px; }
+  .ac-a { font-size: 19px; }
+}
+
+/* ============================================
+   KAKO UČESTVOVATI (steps)
+   ============================================ */
+.how {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px 18px;
+}
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+.step {
+  background: var(--ivory);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--green);
+  border-radius: 0 0 4px 4px;
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.step:hover {
+  border-color: var(--green);
+  border-top-color: var(--clay);
+  transform: translateY(-2px);
+}
+.step:hover .st-no { color: var(--clay); }
+.st-no {
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-feature-settings: "lnum","tnum";
+  transition: color .15s ease;
+}
+.st-body { display: flex; flex-direction: column; gap: 4px; }
+.st-h {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.st-t {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.st-t strong { font-weight: 700; color: var(--green); }
+
+@media (max-width: 980px) {
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .steps li:nth-child(4) { grid-column: span 1; }
+  .steps li:nth-child(5) { grid-column: span 1; }
+}
+@media (max-width: 640px) {
+  .steps { grid-template-columns: 1fr; }
+  .step { padding: 12px 14px; }
+  .st-no { font-size: 24px; }
+}
+
+/* ============================================
+   FAQ
+   ============================================ */
+.faq-block {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px 18px;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.faq-card {
+  background: var(--ivory);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--clay);
+  border-radius: 0 4px 4px 0;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .15s ease;
+}
+.faq-card:hover { border-color: var(--green); border-left-color: var(--clay); }
+.fq-q {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  display: flex;
+  gap: 6px;
+}
+.fq-q::before {
+  content: "Q.";
+  color: var(--clay);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fq-a {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-2);
+  display: flex;
+  gap: 6px;
+}
+.fq-a::before {
+  content: "A.";
+  color: var(--green);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.fq-a strong { color: var(--green); font-weight: 700; }
+
+@media (max-width: 720px) {
+  .faq-grid { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ============================================
    PRINT
    ============================================ */
 @media print {
@@ -1445,4 +1660,46 @@ button { font: inherit; cursor: pointer; color: inherit; }
   .rh { color: #1f5240 !important; font-size: 8pt !important; }
   .rt { font-size: 10pt !important; color: #000 !important; }
   .rt strong { color: #1f5240 !important; }
+
+  .about, .how, .faq-block {
+    background: #fff !important;
+    border-color: #999 !important;
+    padding: 10pt 12pt;
+    page-break-inside: avoid;
+  }
+  .about-lede { font-size: 10pt !important; color: #000 !important; }
+  .about-grid { grid-template-columns: repeat(3, 1fr); gap: 6pt; }
+  .ac {
+    background: #faf6e7 !important;
+    border-color: #ccc !important;
+    -webkit-print-color-adjust: exact;
+    padding: 8pt 10pt;
+  }
+  .ac-q { color: #b95e2f !important; font-size: 8pt !important; }
+  .ac-a { color: #1f5240 !important; font-size: 14pt !important; }
+  .ac-d { font-size: 9pt !important; color: #000 !important; }
+
+  .steps { grid-template-columns: repeat(5, 1fr); gap: 6pt; }
+  .step {
+    background: #faf6e7 !important;
+    border-color: #ccc !important;
+    border-top-color: #1f5240 !important;
+    -webkit-print-color-adjust: exact;
+    padding: 8pt 10pt;
+  }
+  .st-no { color: #1f5240 !important; font-size: 18pt !important; }
+  .st-h { color: #b95e2f !important; font-size: 8pt !important; }
+  .st-t { font-size: 9pt !important; color: #000 !important; }
+
+  .faq-grid { grid-template-columns: repeat(2, 1fr); gap: 6pt; }
+  .faq-card {
+    background: #faf6e7 !important;
+    border-color: #ccc !important;
+    border-left-color: #b95e2f !important;
+    -webkit-print-color-adjust: exact;
+    padding: 8pt 10pt;
+  }
+  .fq-q { font-size: 10pt !important; color: #000 !important; }
+  .fq-a { font-size: 9pt !important; color: #000 !important; }
+  .fq-q::before, .fq-a::before { -webkit-print-color-adjust: exact; }
 }
