@@ -8,18 +8,24 @@ const FORMATS = [
   { label: "7+3", rounds:  9, dur: "3h30",   durMin: 210 },
 ];
 
-const START      = new Date(2026, 5, 7);   // nedjelja 7. jun
-const END        = new Date(2026, 11, 20); // nedjelja 20. dec
+const START      = new Date(2026, 5, 6);   // subota 6. jun
+const END        = new Date(2026, 11, 19); // subota 19. dec
 const START_HOUR = 10;
 const LOCATION   = "SK Sarajevo";
 const SERIES     = "Šahovski Vikend Sarajevo";
 
+// progresivno otkrivanje redova
+const CAL_INITIAL   = 6;
+const CAL_STEP      = 4;
+const PRIZE_INITIAL = 6;
+const PRIZE_STEP    = 4;
+
 // ─── HARDKODOVANI POMJERAJI ─────────────────────────────
 // Da pomjeriš termin, dodaj/ažuriraj unos po nultobaziranom indexu (idx).
-//   date   — ISO datum (YYYY-MM-DD)
-//   reason — kratko obrazloženje (prikazuje se na kalendaru i u modalu)
+//   date:   ISO datum (YYYY-MM-DD)
+//   reason: kratko obrazloženje (prikazuje se na kalendaru i u modalu)
 const OVERRIDES = {
-  6: { date: "2026-08-23", reason: "A/B i Premijer liga" }, // 7. turnir: 30 → 23 aug
+  6: { date: "2026-08-22", reason: "A/B i Premijer liga" }, // 7. turnir: subota 29 → subota 22 aug
 };
 
 const DAYS        = ["Ned","Pon","Uto","Sri","Čet","Pet","Sub"];
@@ -95,7 +101,7 @@ function fmtTime(d) {
 }
 
 function timeRange(d, fmt) {
-  return fmtTime(startTime(d)) + " — " + fmtTime(endTime(d, fmt));
+  return fmtTime(startTime(d)) + " do " + fmtTime(endTime(d, fmt));
 }
 
 function formatDateLong(d) {
@@ -266,7 +272,7 @@ function buildCalendar(items, nextPos) {
       const r = el("div", "cr-reason");
       r.appendChild(el("span", "crr-ico", "↗"));
       const tx = el("span", "crr-tx");
-      tx.appendChild(document.createTextNode("pomjeren — "));
+      tx.appendChild(document.createTextNode("pomjeren: "));
       const strong = document.createElement("strong");
       strong.textContent = it.reason || "vikend zauzet";
       tx.appendChild(strong);
@@ -403,7 +409,7 @@ function renderDetail(it) {
   if (it.moved) {
     orig.hidden = false;
     document.getElementById("dOrigDate").textContent = formatDateLong(it.originalD);
-    document.getElementById("dReason").textContent = it.reason || "—";
+    document.getElementById("dReason").textContent = it.reason || "…";
   } else {
     orig.hidden = true;
   }
@@ -440,17 +446,17 @@ function showToast(msg) {
 function buildShareText() {
   const items = _items;
   const preview = items.slice(0, 6).map((it) => {
-    const note = it.moved ? `  (pomjeren: ${it.reason || "—"})` : "";
+    const note = it.moved ? `  (pomjeren: ${it.reason || "nepoznat razlog"})` : "";
     return `${pad(it.idx + 1)}. ${DAYS[it.d.getDay()]} ${pad(it.d.getDate())}.${pad(it.d.getMonth() + 1)}  ${it.fmt.label} (${it.fmt.rounds} kola)${note}`;
   });
   const next = _nextItem;
   const nextLine = next
     ? `${DAYS[next.d.getDay()]} ${pad(next.d.getDate())}.${pad(next.d.getMonth() + 1)} · ${next.fmt.label} · ${next.fmt.rounds} kola · ${fmtTime(startTime(next.d))}`
-    : "—";
+    : "još nema termina";
 
   return [
     `${SERIES.toUpperCase()} · 2026`,
-    `Blitz turniri svake druge nedjelje · 10:00 · ${LOCATION}.`,
+    `Blitz turniri svake druge subote ujutru u 10:00 · ${LOCATION}.`,
     "",
     `Sljedeći: ${nextLine}`,
     "",
@@ -462,8 +468,9 @@ function buildShareText() {
     "• Tempo rotira: 3+2 (13k, ~2h30) → 5+3 (11k, ~3h30) → 7+3 (9k, ~3h30)",
     "• Fond: 75% regularne · 25% specijalne (donja 50% liste po rejtingu)",
     "• Min. nagrada ≥ 20 KM",
-    "• Nedjelja zauzeta → subota istog vikenda",
-    "• Cijeli vikend zauzet → sedmicu ranije ili kasnije (prema slobodnoj nedjelji)",
+    "• Preferiramo subotu ujutru u 10h",
+    "• Subota zauzeta → nedjelja istog vikenda",
+    "• Cijeli vikend zauzet → sedmicu ranije ili kasnije (prema slobodnoj suboti)",
   ].join("\n");
 }
 
@@ -568,11 +575,67 @@ function setupICS() {
 }
 
 /* =====================================================
+   PROGRESIVNO OTKRIVANJE REDOVA
+   ===================================================== */
+let _calVisible   = CAL_INITIAL;
+let _prizeVisible = PRIZE_INITIAL;
+
+function applyVisibility(rowSelector, btnId, visible, step) {
+  const rows = document.querySelectorAll(rowSelector);
+  rows.forEach((r, i) => r.classList.toggle("row-hidden", i >= visible));
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  const remaining = rows.length - visible;
+  if (remaining <= 0) { btn.hidden = true; return; }
+  btn.hidden = false;
+  const next = Math.min(step, remaining);
+  btn.replaceChildren();
+  btn.appendChild(document.createTextNode("prikaži još "));
+  const s = document.createElement("strong");
+  s.textContent = String(next);
+  btn.appendChild(s);
+  btn.appendChild(document.createTextNode(" (preostalo "));
+  const r = document.createElement("strong");
+  r.textContent = String(remaining);
+  btn.appendChild(r);
+  btn.appendChild(document.createTextNode(")"));
+}
+
+function refreshCalVisibility() {
+  applyVisibility("#calList .cal-row", "calMore", _calVisible, CAL_STEP);
+}
+function refreshPrizeVisibility() {
+  applyVisibility("#prizeBody tr", "prizeMore", _prizeVisible, PRIZE_STEP);
+}
+
+function setupShowMore() {
+  const calBtn = document.getElementById("calMore");
+  if (calBtn) {
+    calBtn.addEventListener("click", () => {
+      _calVisible += CAL_STEP;
+      refreshCalVisibility();
+    });
+  }
+  const prizeBtn = document.getElementById("prizeMore");
+  if (prizeBtn) {
+    prizeBtn.addEventListener("click", () => {
+      _prizeVisible += PRIZE_STEP;
+      refreshPrizeVisibility();
+    });
+  }
+}
+
+/* =====================================================
    INIT
    ===================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   _items = buildItems();
   _nextPos = findNextIdxInList(_items);
+
+  // ako je next-pos van inicijalne grupe, proširi da bude vidljiv + 2 reda konteksta
+  if (_nextPos >= 0 && _nextPos + 1 > _calVisible) {
+    _calVisible = Math.min(_items.length, _nextPos + 2);
+  }
 
   buildUpcomingSlider(_items, _nextPos);
   buildCalendar(_items, _nextPos);
@@ -583,4 +646,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupCopy();
   setupPDF();
   setupICS();
+  setupShowMore();
+
+  refreshCalVisibility();
+  refreshPrizeVisibility();
 });

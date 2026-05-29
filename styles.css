@@ -774,7 +774,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cal-row.next-row .cr-dy,
 .cal-row.next-row .cr-n { color: var(--clay); }
 
-/* MOVED — second line with reason */
+/* MOVED: second line with reason */
 .cal-row.moved {
   grid-template-rows: auto auto;
   padding-bottom: 9px;
@@ -811,6 +811,41 @@ button { font: inherit; cursor: pointer; color: inherit; }
   font-size: 11px;
   letter-spacing: 0.06em;
 }
+
+/* show-more dugmad i sakriveni redovi */
+.cal-row.row-hidden,
+.prize tbody tr.row-hidden { display: none; }
+
+.show-more {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: var(--ivory);
+  border: 1px solid var(--rule-2);
+  border-radius: 4px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all .15s ease;
+  text-align: center;
+  text-transform: lowercase;
+}
+.show-more:hover, .show-more:focus-visible {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(31,82,64,0.05);
+  outline: none;
+}
+.show-more strong {
+  font-weight: 700;
+  color: var(--green);
+  margin: 0 4px;
+}
+.show-more[hidden] { display: none; }
 
 /* compact distribution */
 .dist {
