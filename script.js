@@ -8,8 +8,8 @@ const FORMATS = [
   { label: "7+3", rounds:  9, dur: "3h30",   durMin: 210 },
 ];
 
-const START      = new Date(2026, 5, 6);   // subota 6. jun
-const END        = new Date(2026, 11, 19); // subota 19. dec
+const START      = new Date(2026, 5, 20);  // subota 20. jun
+const END        = new Date(2027, 0, 2);   // slot 15: jan 2 (override na 26 dec)
 const START_HOUR = 10;
 const LOCATION   = "SK Sarajevo";
 const SERIES     = "Šahovski Vikend Sarajevo";
@@ -25,7 +25,8 @@ const PRIZE_STEP    = 4;
 //   date:   ISO datum (YYYY-MM-DD)
 //   reason: kratko obrazloženje (prikazuje se na kalendaru i u modalu)
 const OVERRIDES = {
-  6: { date: "2026-08-22", reason: "A/B i Premijer liga" }, // 7. turnir: subota 29 → subota 22 aug
+  5:  { date: "2026-08-22", reason: "A/B i Premijer liga" }, // 6. turnir: sub 29 aug → sub 22 aug
+  14: { date: "2026-12-26", reason: ""                    }, // 15. turnir: sub 2 jan → sub 26 dec
 };
 
 const DAYS        = ["Ned","Pon","Uto","Sri","Čet","Pet","Sub"];
@@ -33,24 +34,52 @@ const DAYS_FULL   = ["Nedjelja","Ponedjeljak","Utorak","Srijeda","Četvrtak","Pe
 const MONTHS      = ["jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"];
 const MONTHS_FULL = ["januar","februar","mart","april","maj","juni","juli","august","septembar","oktobar","novembar","decembar"];
 
-const PRIZES = [
-  [10, 200, [60, 40, 30, 20],            [30, 20]],
-  [11, 220, [70, 50, 30, 20],            [30, 20]],
-  [12, 240, [80, 50, 30, 20],            [40, 20]],
-  [13, 260, [80, 60, 40, 20],            [40, 20]],
-  [14, 280, [90, 60, 40, 20],            [40, 30]],
-  [15, 300, [80, 60, 40, 30, 20],        [40, 30]],
-  [16, 320, [80, 60, 50, 30, 20],        [50, 30]],
-  [17, 340, [90, 70, 50, 30, 20],        [50, 30]],
-  [18, 360, [90, 70, 60, 30, 20],        [50, 40]],
-  [19, 380, [100, 70, 60, 40, 20],       [50, 40]],
-  [20, 400, [90, 70, 50, 40, 30, 20],    [50, 30, 20]],
-  [21, 420, [100, 80, 50, 40, 30, 20],   [50, 30, 20]],
-  [22, 440, [110, 80, 50, 40, 30, 20],   [50, 40, 20]],
-  [23, 460, [110, 90, 60, 40, 30, 20],   [50, 40, 20]],
-  [24, 480, [120, 90, 60, 40, 30, 20],   [50, 40, 30]],
-  [25, 500, [120, 100, 70, 40, 30, 20],  [50, 40, 30]],
-];
+const ENTRY_FEE = 10;
+let _upisnina  = ENTRY_FEE;
+
+// Broj nagrada po broju igrača
+function numPrizes(n) {
+  if (n <= 14) return { reg: 2, spc: 2 };
+  if (n <= 19) return { reg: 3, spc: 2 };
+  if (n <= 24) return { reg: 3, spc: 3 };
+  return { reg: 4, spc: 3 };
+}
+
+// Raspoređuje total KM na count nagrada (zaokruženo na 10).
+// Polazi od jednakih dijela → manji raspon između nagrada.
+// firstMin = minimalni iznos 1. nagrade (default 10); ostale ≥ 10.
+function distribute(total, count, firstMin = 10) {
+  if (!count || !total) return [];
+  const extra0 = Math.max(firstMin - 10, 0);
+  let n = Math.min(count, Math.floor((total - extra0) / 10));
+  if (!n) return total >= firstMin ? [total] : [];
+  const base = Math.max(Math.floor(total / n / 10) * 10, 10);
+  const arr  = Array(n).fill(base);
+  if (arr[0] < firstMin) arr[0] = firstMin;
+  arr[0] += total - arr.reduce((a, b) => a + b, 0); // ostatak zaokruživanja → 1. nagrada
+  // 1. nagrada mora biti bar malo veća od 2.
+  if (arr.length > 1 && arr[0] <= arr[1]) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      if (arr[i] >= 20) { arr[i] -= 10; arr[0] += 10; break; }
+    }
+  }
+  return arr;
+}
+
+// Finale: fiksno 1× upisnina po turniru; ostatak 65% reg · 35% spc.
+function computePrizesForN(n, upisnina) {
+  const total   = n * upisnina;
+  const finale  = upisnina;                               // fiksno 1× upisnina po turniru
+  const rem     = total - finale;
+  const regular = Math.floor(rem * 13 / 19 / 10) * 10;   // ≈ 65 % od ostatka
+  const special = rem - regular;                          // ≈ 35 % od ostatka
+  const { reg, spc } = numPrizes(n);
+  return {
+    n, total, regular, special, finale,
+    regPrizes: distribute(regular, reg),
+    spcPrizes: distribute(special, spc, 20),
+  };
+}
 
 /* =====================================================
    UTIL
@@ -138,7 +167,7 @@ function buildItems() {
       const parsed = parseIso(overr.date);
       if (parsed) {
         d = parsed;
-        moved = isoDate(d) !== isoDate(original);
+        moved = isoDate(d) !== isoDate(original) && !!reason;
         reason = overr.reason || "";
       }
     }
@@ -324,36 +353,44 @@ function buildDistribution(items) {
 /* =====================================================
    PRIZES
    ===================================================== */
-function buildPrizes() {
+function buildPrizes(upisnina) {
+  _upisnina = (upisnina != null && !isNaN(upisnina)) ? upisnina : ENTRY_FEE;
   const body = document.getElementById("prizeBody");
   if (!body) return;
   const frag = document.createDocumentFragment();
 
-  PRIZES.forEach(([n, fond, reg, spc]) => {
+  for (let n = 10; n <= 25; n++) {
+    const p  = computePrizesForN(n, _upisnina);
     const tr = el("tr");
 
     tr.appendChild(el("td", "p-n", n));
 
-    const fTd = el("td", "p-f", fond);
+    const fTd = el("td", "p-f");
+    fTd.appendChild(document.createTextNode(p.total));
     fTd.appendChild(el("em", null, "KM"));
     tr.appendChild(fTd);
 
     const r = el("td", "p-r");
-    reg.forEach((v, i) => {
+    p.regPrizes.forEach((v, i) => {
       r.appendChild(el("span", i === 0 ? "first" : null, v));
-      if (i < reg.length - 1) r.appendChild(document.createTextNode(" · "));
+      if (i < p.regPrizes.length - 1) r.appendChild(document.createTextNode(" · "));
     });
     tr.appendChild(r);
 
     const s = el("td", "p-s");
-    spc.forEach((v, i) => {
+    p.spcPrizes.forEach((v, i) => {
       s.appendChild(el("span", i === 0 ? "first" : null, v));
-      if (i < spc.length - 1) s.appendChild(document.createTextNode(" · "));
+      if (i < p.spcPrizes.length - 1) s.appendChild(document.createTextNode(" · "));
     });
     tr.appendChild(s);
 
+    const finTd = el("td", "p-fin");
+    finTd.appendChild(document.createTextNode("+" + p.finale));
+    finTd.appendChild(el("em", null, "KM"));
+    tr.appendChild(finTd);
+
     frag.appendChild(tr);
-  });
+  }
   body.replaceChildren(frag);
 }
 
@@ -464,10 +501,10 @@ function buildShareText() {
     ...preview,
     "...",
     "",
-    "• Upisnina 20 KM",
+    `• Upisnina ${_upisnina} KM`,
     "• Tempo rotira: 3+2 (13k, ~2h30) → 5+3 (11k, ~3h30) → 7+3 (9k, ~3h30)",
-    "• Fond: 75% regularne · 25% specijalne (donja 50% liste po rejtingu)",
-    "• Min. nagrada ≥ 20 KM",
+    `• Fond: od ostatka ~65% reg · ~35% spc · ${_upisnina} KM/turniru → finale`,
+    `• Min. nagrada ≥ ${_upisnina} KM`,
     "• Preferiramo subotu ujutru u 10h",
     "• Subota zauzeta → nedjelja istog vikenda",
     "• Cijeli vikend zauzet → sedmicu ranije ili kasnije (prema slobodnoj suboti)",
@@ -528,8 +565,8 @@ function buildICS() {
       `Format: ${it.fmt.label} · ${it.fmt.rounds} kola · ~${it.fmt.dur}`,
       `Početak: ${fmtTime(startTime(it.d))}`,
       `Lokacija: ${LOCATION}`,
-      `Upisnina: 20 KM`,
-      `Fond: 75% regularne · 25% specijalne`,
+      `Upisnina: ${_upisnina} KM`,
+      `Fond: ~65% reg · ~35% spc · ${_upisnina} KM/turniru finale`,
     ];
     if (it.moved) {
       descParts.push(`POMJEREN sa: ${formatDateLong(it.originalD)}`);
@@ -571,6 +608,77 @@ function setupICS() {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     showToast(".ics preuzet ✓");
+  });
+}
+
+/* =====================================================
+   FINALE PRIZES
+   ===================================================== */
+const FINALE_PLAYERS    = 12;
+const FINALE_TOURNAMENTS = 15;
+const FINALE_REG_COUNT  = 5;
+const FINALE_SPC_COUNT  = 3;
+
+function buildFinalePrizes() {
+  const el2 = document.getElementById("finalePrizeBody");
+  if (!el2) return;
+  const upisnina    = _upisnina;
+  const fromPlayers = FINALE_PLAYERS * upisnina;           // 12 × 10 = 120
+  const fromSeries  = FINALE_TOURNAMENTS * upisnina;       // 15 × 10 = 150
+  const total       = fromPlayers + fromSeries;            // 270 KM
+  const regular     = Math.floor(total * 13 / 19 / 10) * 10;
+  const special     = total - regular;
+  const regPrizes   = distribute(regular, FINALE_REG_COUNT);
+  const spcPrizes   = distribute(special, FINALE_SPC_COUNT, 20);
+
+  // update summary line
+  const sumEl = document.getElementById("finaleFondTotal");
+  if (sumEl) sumEl.textContent = total;
+  const fromPEl = document.getElementById("finaleFondPlayers");
+  if (fromPEl) fromPEl.textContent = fromPlayers;
+  const fromSEl = document.getElementById("finaleFondSeries");
+  if (fromSEl) fromSEl.textContent = fromSeries;
+
+  const frag = document.createDocumentFragment();
+
+  // regular prizes
+  regPrizes.forEach((v, i) => {
+    const tr = el("tr");
+    tr.appendChild(el("td", "p-n fp-pos", i + 1));
+    tr.appendChild(el("td", "p-f fp-cat", "reg."));
+    const td = el("td", "p-r");
+    td.appendChild(el("span", "first", v));
+    td.appendChild(el("em", null, "KM"));
+    tr.appendChild(td);
+    frag.appendChild(tr);
+  });
+
+  // special prizes
+  spcPrizes.forEach((v, i) => {
+    const tr = el("tr");
+    tr.appendChild(el("td", "p-n fp-pos fp-spc", i + 1));
+    tr.appendChild(el("td", "p-f fp-cat fp-spc", "spc."));
+    const td = el("td", "p-s");
+    td.appendChild(el("span", i === 0 ? "first" : null, v));
+    td.appendChild(el("em", null, "KM"));
+    tr.appendChild(td);
+    frag.appendChild(tr);
+  });
+
+  el2.replaceChildren(frag);
+}
+
+/* =====================================================
+   PRIZE CALCULATOR
+   ===================================================== */
+function setupPrizeCalc() {
+  const inp = document.getElementById("upisnina-input");
+  if (!inp) return;
+  inp.addEventListener("input", () => {
+    const v = Math.max(1, parseInt(inp.value, 10) || ENTRY_FEE);
+    buildPrizes(v);
+    buildFinalePrizes();
+    refreshPrizeVisibility();
   });
 }
 
@@ -641,11 +749,13 @@ document.addEventListener("DOMContentLoaded", () => {
   buildCalendar(_items, _nextPos);
   buildDistribution(_items);
   buildPrizes();
+  buildFinalePrizes();
 
   setupDetail();
   setupCopy();
   setupPDF();
   setupICS();
+  setupPrizeCalc();
   setupShowMore();
 
   refreshCalVisibility();

@@ -44,7 +44,7 @@
       </h1>
       <p class="tagline">
         <strong>15 blitz turnira</strong> kroz 2026. <strong>Subotom u 10:00</strong>, u prostorijama <strong>ŠK Sarajevo</strong>.
-        <span>Upisnina <strong>20 KM</strong> ide u cijelosti u nagradni fond.</span>
+        <span>Upisnina <strong>10 KM</strong> — od ostatka ~<strong>65%</strong> reg · ~<strong>35%</strong> spc · <strong>10 KM/turniru</strong> → fond za finale.</span>
       </p>
       <div class="tempo-row">
         <span class="tp tp-1">3+2 <em>13 kola · ~2h30</em></span>
@@ -82,8 +82,8 @@
     <div class="pgn-col">
       <span class="pgn-line"><span class="pgn-k">Kada</span><span class="pgn-v">"Svake druge subote u 10h"</span></span>
       <span class="pgn-line"><span class="pgn-k">Format</span><span class="pgn-v">"Blitz / Swiss"</span></span>
-      <span class="pgn-line"><span class="pgn-k">Upisnina</span><span class="pgn-v">"20 KM"</span></span>
-      <span class="pgn-line"><span class="pgn-k">Nagrade</span><span class="pgn-v ">"Broj igraca x upisnina"</span></span>
+      <span class="pgn-line"><span class="pgn-k">Upisnina</span><span class="pgn-v">"10 KM"</span></span>
+      <span class="pgn-line"><span class="pgn-k">Nagrade</span><span class="pgn-v">"65% reg · 30% spc · 5% finale"</span></span>
     </div>
   </section>
 
@@ -122,8 +122,8 @@
       </div>
       <div class="ac">
         <span class="ac-q">Koliko?</span>
-        <strong class="ac-a">20 KM upisnine</strong>
-        <span class="ac-d">cijeli iznos se vraća igračima kroz nagradni fond (regularne + specijalne nagrade)</span>
+        <strong class="ac-a">10 KM upisnine</strong>
+        <span class="ac-d">65% regularne · 30% specijalne · 5% fond za finale serijala (2. januara 2027.)</span>
       </div>
       <div class="ac">
         <span class="ac-q">Format?</span>
@@ -146,14 +146,14 @@
         <span class="st-no">01</span>
         <div class="st-body">
           <span class="st-h">Dođi na vrijeme</span>
-          <span class="st-t">Stigni u <strong>ŠK Sarajevo do 09:45</strong> u subotu turnira. Donesi 20 KM za upisninu.</span>
+          <span class="st-t">Stigni u <strong>ŠK Sarajevo do 09:45</strong> u subotu turnira. Donesi 10 KM za upisninu.</span>
         </div>
       </li>
       <li class="step">
         <span class="st-no">02</span>
         <div class="st-body">
           <span class="st-h">Upiši se</span>
-          <span class="st-t">Plati <strong>20 KM upisnine</strong> i upiši se na startnu listu. Možeš igrati sa ili bez registrovanog rejtinga.</span>
+          <span class="st-t">Plati <strong>10 KM upisnine</strong> i upiši se na startnu listu. Možeš igrati sa ili bez registrovanog rejtinga.</span>
         </div>
       </li>
       <li class="step">
@@ -208,27 +208,48 @@
         <span class="dist-row" data-t="5+3"><b>5+3</b><i class="db"><i class="df"></i></i><u id="d5">…</u></span>
         <span class="dist-row" data-t="7+3"><b>7+3</b><i class="db"><i class="df"></i></i><u id="d7">…</u></span>
       </div>
+
+      <div class="dist-finale">
+        <span class="df-label">♔ finale:</span>
+        <span class="df-date">2. januara 2027.</span>
+        <span class="df-sep">·</span>
+        <span class="df-chip">5+3</span>
+        <span class="df-chip">11 kola</span>
+        <span class="df-chip">~3h30</span>
+        <span class="df-chip">Berger</span>
+        <span class="df-chip df-chip-players">12 igrača</span>
+      </div>
     </article>
 
     <article class="panel pn-prize">
       <header class="ph">
         <span class="ph-no ph-mv">2<i>...</i>d6</span>
         <h2 class="ph-t">Nagrade</h2>
-        <span class="ph-meta">75 % regularne · 25 % specijalne</span>
+        <span class="ph-meta">~65 % regularne · ~35 % specijalne · 10 KM/turniru finale</span>
       </header>
 
       <p class="prize-note">
-        Nagradni fond čine sve upisnine tog turnira: <strong>75 %</strong> ide regularnim nagradama (top plasmani), <strong>25 %</strong> specijalnim (donja polovina startne liste po rejtingu).
+        Nagradni fond čine sve upisnine turnira. <strong>10 KM</strong> po turniru ide u fond za <strong>finale serijala</strong> (2. januara 2027.), a ostatak se dijeli: ~<strong>65 %</strong> regularnim nagradama (top plasmani) i ~<strong>35 %</strong> specijalnim (donja polovina po rejtingu).
       </p>
+
+      <div class="prize-calc">
+        <label class="pc-label" for="upisnina-input">Preračunaj za upisninu:</label>
+        <div class="pc-row">
+          <input class="pc-inp" type="number" id="upisnina-input" value="10" min="1" max="200" step="5" />
+          <span class="pc-km">KM</span>
+        </div>
+        <span class="pc-hint">tabela se automatski preračunava</span>
+      </div>
 
       <div class="prize-wrap">
         <table class="prize">
           <thead>
             <tr>
-              <th class="ph-cn">Broj igrača</th>
+              <th class="ph-cn">Igrača</th>
               <th class="ph-cf">fond</th>
               <th class="ph-cr"><span class="ppc">♚</span> regularne <em>KM</em></th>
               <th class="ph-cs"><span class="ppc">♟</span> specijalne <em>KM</em></th>
+              <th class="ph-cf-fin"><span class="ppc ppc-fin">♔</span> finale <em>+KM</em></th>
             </tr>
           </thead>
           <tbody id="prizeBody"></tbody>
@@ -238,6 +259,61 @@
       <button type="button" class="show-more" id="prizeMore" hidden>Prikaži još grupa igrača</button>
     </article>
 
+  </section>
+
+  <!-- FINALE SERIJALA -->
+  <section class="about finale-block">
+    <header class="ph">
+      <span class="ph-no ph-mv">♔</span>
+      <h2 class="ph-t">Finale serijala</h2>
+      <span class="ph-meta">2. januara 2027. · Berger sistem · 12 igrača</span>
+    </header>
+
+    <p class="about-lede">
+      Na kraju sezone, <strong>12 igrača</strong> s najviše kumulativnih bodova iz svih 15 turnira serijala srijeće se u završnom kružnom turniru. Sa svakog turnira ide <strong>10 KM</strong> u fond za finale — ukupno 150 KM akumulirano, plus 120 KM od upisnina finala.
+    </p>
+
+    <div class="about-grid">
+      <div class="ac">
+        <span class="ac-q">Datum</span>
+        <strong class="ac-a">2. januara 2027.</strong>
+        <span class="ac-d">Subota · ŠK Sarajevo · 10:00</span>
+      </div>
+      <div class="ac">
+        <span class="ac-q">Format</span>
+        <strong class="ac-a">Berger · 5+3</strong>
+        <span class="ac-d">Kružni turnir, svaki igra sa svakim · 11 kola · ~3h30</span>
+      </div>
+      <div class="ac">
+        <span class="ac-q">Učesnici</span>
+        <strong class="ac-a">12 igrača</strong>
+        <span class="ac-d">Prvih 12 po ukupnim bodovima sa svih 15 turnira serijala</span>
+      </div>
+      <div class="ac">
+        <span class="ac-q">Fond</span>
+        <strong class="ac-a"><span id="finaleFondTotal">270</span> KM</strong>
+        <span class="ac-d"><span id="finaleFondPlayers">120</span> KM upisnine (12×10) + <span id="finaleFondSeries">150</span> KM akumulirano (15×10)</span>
+      </div>
+    </div>
+
+    <div class="finale-prizes">
+      <div class="fp-head">
+        <span class="fp-title">♔ Nagrade finala</span>
+        <span class="fp-total">fond: <strong id="finaleFondTotal2">270</strong> KM · 5 regularne + 3 specijalne</span>
+      </div>
+      <div class="prize-wrap">
+        <table class="prize finale-prize-table">
+          <thead>
+            <tr>
+              <th>Mj.</th>
+              <th>Kat.</th>
+              <th><span class="ppc">♚</span> nagrada <em>KM</em></th>
+            </tr>
+          </thead>
+          <tbody id="finalePrizeBody"></tbody>
+        </table>
+      </div>
+    </div>
   </section>
 
   <!-- FAQ -->
@@ -353,7 +429,7 @@
       <div class="d-row"><span>vrijeme</span><strong id="dTime">…</strong></div>
       <div class="d-row"><span>trajanje</span><strong id="dDur">…</strong></div>
       <div class="d-row"><span>klub</span><strong>SK Sarajevo</strong></div>
-      <div class="d-row"><span>upisnina</span><strong>20 KM</strong></div>
+      <div class="d-row"><span>upisnina</span><strong>10 KM</strong></div>
       <div class="d-row"><span>dani do</span><strong id="dDays">…</strong></div>
     </div>
   </section>
