@@ -10,7 +10,8 @@ const FORMATS = [
 
 const START      = new Date(2026, 5, 20);  // subota 20. jun
 const END        = new Date(2027, 0, 2);   // slot 15: jan 2 (override na 26 dec)
-const START_HOUR = 10;
+const START_HOUR = 12;
+const START_MIN  = 30;
 const LOCATION   = "SK Sarajevo";
 const SERIES     = "Šahovski Vikend Sarajevo";
 
@@ -25,8 +26,10 @@ const PRIZE_STEP    = 4;
 //   date:   ISO datum (YYYY-MM-DD)
 //   reason: kratko obrazloženje (prikazuje se na kalendaru i u modalu)
 const OVERRIDES = {
-  5:  { date: "2026-08-22", reason: "A/B i Premijer liga" }, // 6. turnir: sub 29 aug → sub 22 aug
-  14: { date: "2026-12-26", reason: ""                    }, // 15. turnir: sub 2 jan → sub 26 dec
+  0:  { date: "2026-06-21", reason: "Turnir u Srebreniku"  }, // 1. turnir:  sub 20 jun → ned 21 jun
+  1:  { date: "2026-07-05", reason: "Turnir u Stocu"       }, // 2. turnir:  sub 4 jul → ned 5 jul
+  5:  { date: "2026-08-22", reason: "A/B i Premijer liga"  }, // 6. turnir:  sub 29 aug → sub 22 aug
+  14: { date: "2026-12-26", reason: ""                     }, // 15. turnir: sub 2 jan → sub 26 dec
 };
 
 const DAYS        = ["Ned","Pon","Uto","Sri","Čet","Pet","Sub"];
@@ -39,10 +42,12 @@ let _upisnina  = ENTRY_FEE;
 
 // Broj nagrada po broju igrača
 function numPrizes(n) {
-  if (n <= 14) return { reg: 2, spc: 2 };
-  if (n <= 19) return { reg: 3, spc: 2 };
-  if (n <= 24) return { reg: 3, spc: 3 };
-  return { reg: 4, spc: 3 };
+  if (n <= 11) return { reg: 2, spc: 2 };
+  if (n <= 14) return { reg: 3, spc: 2 };
+  if (n <= 18) return { reg: 4, spc: 2 };
+  if (n <= 22) return { reg: 4, spc: 3 };
+  if (n <= 26) return { reg: 5, spc: 3 };
+  return { reg: 5, spc: 4 };
 }
 
 // Raspoređuje total KM na count nagrada (zaokruženo na 10).
@@ -77,7 +82,7 @@ function computePrizesForN(n, upisnina) {
   return {
     n, total, regular, special, finale,
     regPrizes: distribute(regular, reg),
-    spcPrizes: distribute(special, spc, 20),
+    spcPrizes: distribute(special, spc),
   };
 }
 
@@ -117,7 +122,7 @@ function addMin(d, mins) {
 
 function startTime(d) {
   const x = new Date(d);
-  x.setHours(START_HOUR, 0, 0, 0);
+  x.setHours(START_HOUR, START_MIN, 0, 0);
   return x;
 }
 
@@ -493,7 +498,7 @@ function buildShareText() {
 
   return [
     `${SERIES.toUpperCase()} · 2026`,
-    `Blitz turniri svake druge subote ujutru u 10:00 · ${LOCATION}.`,
+    `Blitz turniri svake druge subote u 12:30 · ${LOCATION}.`,
     "",
     `Sljedeći: ${nextLine}`,
     "",
@@ -505,7 +510,7 @@ function buildShareText() {
     "• Tempo rotira: 3+2 (13k, ~2h30) → 5+3 (11k, ~3h30) → 7+3 (9k, ~3h30)",
     `• Fond: od ostatka ~65% reg · ~35% spc · ${_upisnina} KM/turniru → finale`,
     `• Min. nagrada ≥ ${_upisnina} KM`,
-    "• Preferiramo subotu ujutru u 10h",
+    "• Preferiramo subotu u 12:30h",
     "• Subota zauzeta → nedjelja istog vikenda",
     "• Cijeli vikend zauzet → sedmicu ranije ili kasnije (prema slobodnoj suboti)",
   ].join("\n");
@@ -538,7 +543,7 @@ function setupPDF() {
    ===================================================== */
 function icsDt(d, addMins = 0) {
   const x = new Date(d);
-  x.setHours(START_HOUR, 0, 0, 0);
+  x.setHours(START_HOUR, START_MIN, 0, 0);
   x.setMinutes(x.getMinutes() + addMins);
   return x.getFullYear() + pad(x.getMonth() + 1) + pad(x.getDate()) + "T" +
          pad(x.getHours()) + pad(x.getMinutes()) + "00";
@@ -614,10 +619,10 @@ function setupICS() {
 /* =====================================================
    FINALE PRIZES
    ===================================================== */
-const FINALE_PLAYERS    = 12;
+const FINALE_PLAYERS     = 12;
 const FINALE_TOURNAMENTS = 15;
-const FINALE_REG_COUNT  = 5;
-const FINALE_SPC_COUNT  = 3;
+const FINALE_SPC_COUNT   = 3;
+const FINALE_REG_PRIZES  = [60, 40, 30, 30, 20]; // fiksne regularne nagrade finala
 
 function buildFinalePrizes() {
   const el2 = document.getElementById("finalePrizeBody");
@@ -626,10 +631,10 @@ function buildFinalePrizes() {
   const fromPlayers = FINALE_PLAYERS * upisnina;           // 12 × 10 = 120
   const fromSeries  = FINALE_TOURNAMENTS * upisnina;       // 15 × 10 = 150
   const total       = fromPlayers + fromSeries;            // 270 KM
-  const regular     = Math.floor(total * 13 / 19 / 10) * 10;
+  const regPrizes   = FINALE_REG_PRIZES;
+  const regular     = regPrizes.reduce((a, b) => a + b, 0);
   const special     = total - regular;
-  const regPrizes   = distribute(regular, FINALE_REG_COUNT);
-  const spcPrizes   = distribute(special, FINALE_SPC_COUNT, 20);
+  const spcPrizes   = distribute(special, FINALE_SPC_COUNT);
 
   // update summary line
   const sumEl = document.getElementById("finaleFondTotal");
