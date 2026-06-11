@@ -44,15 +44,12 @@ let _upisnina  = ENTRY_FEE;
 function numPrizes(n) {
   if (n <= 11) return { reg: 2, spc: 2 };
   if (n <= 14) return { reg: 3, spc: 2 };
-  if (n <= 18) return { reg: 4, spc: 2 };
   if (n <= 22) return { reg: 4, spc: 3 };
-  if (n <= 26) return { reg: 5, spc: 3 };
-  return { reg: 5, spc: 4 };
+  return       { reg: 5, spc: 4 };
 }
 
-// Raspoređuje total KM na count nagrada (zaokruženo na 10).
-// Polazi od jednakih dijela → manji raspon između nagrada.
-// firstMin = minimalni iznos 1. nagrade (default 10); ostale ≥ 10.
+// Raspoređuje total KM na count nagrada (zaokruženo na 10, ≥ 10 svaka).
+// Ostatak dijeli round-robin od 1. mjesta, zatim daje 1. prednost.
 function distribute(total, count, firstMin = 10) {
   if (!count || !total) return [];
   const extra0 = Math.max(firstMin - 10, 0);
@@ -61,12 +58,19 @@ function distribute(total, count, firstMin = 10) {
   const base = Math.max(Math.floor(total / n / 10) * 10, 10);
   const arr  = Array(n).fill(base);
   if (arr[0] < firstMin) arr[0] = firstMin;
-  arr[0] += total - arr.reduce((a, b) => a + b, 0); // ostatak zaokruživanja → 1. nagrada
-  // 1. nagrada mora biti bar malo veća od 2.
+  // Rasporedi ostatak od zaokrugivanja od 1. mjesta prema dolje
+  let rem = total - arr.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < n && rem >= 10; i++, rem -= 10) arr[i] += 10;
+  // 1. nagrada mora biti strogo veća od 2.
   if (arr.length > 1 && arr[0] <= arr[1]) {
     for (let i = arr.length - 1; i > 0; i--) {
       if (arr[i] >= 20) { arr[i] -= 10; arr[0] += 10; break; }
     }
+  }
+  // Daj 1. nagradi vidljivu prednost (≥ 20 KM iznad 2.)
+  if (arr.length > 1 && arr[0] <= arr[1] + 10) {
+    const last = arr.length - 1;
+    if (arr[last] >= 30) { arr[last] -= 10; arr[0] += 10; }
   }
   return arr;
 }
@@ -171,9 +175,9 @@ function buildItems() {
     if (overr && overr.date) {
       const parsed = parseIso(overr.date);
       if (parsed) {
-        d = parsed;
-        moved = isoDate(d) !== isoDate(original) && !!reason;
+        d      = parsed;
         reason = overr.reason || "";
+        moved  = isoDate(d) !== isoDate(original) && !!reason;
       }
     }
     items.push({
@@ -293,6 +297,7 @@ function buildCalendar(items, nextPos) {
     dt.appendChild(el("span", "cr-dy", DAYS[it.d.getDay()]));
     dt.appendChild(el("span", "cr-day", pad(it.d.getDate())));
     dt.appendChild(el("span", "cr-mo", MONTHS[it.d.getMonth()]));
+    if (it.moved) dt.appendChild(el("span", "cr-mv", "↗"));
     row.appendChild(dt);
 
     const tempo = el("span", "cr-tempo", it.fmt.label);
@@ -311,7 +316,7 @@ function buildCalendar(items, nextPos) {
       strong.textContent = it.reason || "vikend zauzet";
       tx.appendChild(strong);
       r.appendChild(tx);
-      r.appendChild(el("em", "crr-orig", `bilo: ${shortDate(it.originalD)}`));
+      r.appendChild(el("em", "crr-orig", shortDate(it.originalD)));
       row.appendChild(r);
     }
 
@@ -364,7 +369,7 @@ function buildPrizes(upisnina) {
   if (!body) return;
   const frag = document.createDocumentFragment();
 
-  for (let n = 10; n <= 25; n++) {
+  for (let n = 8; n <= 25; n++) {
     const p  = computePrizesForN(n, _upisnina);
     const tr = el("tr");
 
@@ -375,17 +380,25 @@ function buildPrizes(upisnina) {
     fTd.appendChild(el("em", null, "KM"));
     tr.appendChild(fTd);
 
+    // Regularne nagrade s oznakama mjesta
     const r = el("td", "p-r");
     p.regPrizes.forEach((v, i) => {
-      r.appendChild(el("span", i === 0 ? "first" : null, v));
-      if (i < p.regPrizes.length - 1) r.appendChild(document.createTextNode(" · "));
+      const g = el("span", i === 0 ? "pz pz-1" : "pz");
+      g.appendChild(el("span", "pz-n", (i + 1) + "."));
+      g.appendChild(el("span", "pz-v", v));
+      r.appendChild(g);
+      if (i < p.regPrizes.length - 1) r.appendChild(document.createTextNode(" "));
     });
     tr.appendChild(r);
 
+    // Specijalne nagrade s oznakama mjesta
     const s = el("td", "p-s");
     p.spcPrizes.forEach((v, i) => {
-      s.appendChild(el("span", i === 0 ? "first" : null, v));
-      if (i < p.spcPrizes.length - 1) s.appendChild(document.createTextNode(" · "));
+      const g = el("span", i === 0 ? "pz pz-s1" : "pz pz-s");
+      g.appendChild(el("span", "pz-n", (i + 1) + "."));
+      g.appendChild(el("span", "pz-v", v));
+      s.appendChild(g);
+      if (i < p.spcPrizes.length - 1) s.appendChild(document.createTextNode(" "));
     });
     tr.appendChild(s);
 

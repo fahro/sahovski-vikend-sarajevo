@@ -691,7 +691,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .cal-row:active { background: var(--paper-3); }
 
 .cr-n { color: var(--ink-3); font-size: 14px; font-weight: 600; font-feature-settings: "tnum", "lnum"; }
-.cr-dt { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.cr-dt { display: flex; align-items: baseline; gap: 8px; min-width: 0; flex-wrap: wrap; }
 .cr-dy {
   font-family: var(--f-mono);
   font-size: 13px;
@@ -760,7 +760,7 @@ button { font: inherit; cursor: pointer; color: inherit; }
 
 /* NEXT */
 .cal-row.next-row {
-  background: linear-gradient(90deg, rgba(185,94,47,0.10), rgba(185,94,47,0.02));
+  background: linear-gradient(90deg, rgba(185,94,47,0.09), rgba(185,94,47,0.01));
 }
 .cal-row.next-row::before {
   content: "";
@@ -770,6 +770,22 @@ button { font: inherit; cursor: pointer; color: inherit; }
   background: var(--clay);
   box-shadow: 0 0 8px rgba(185,94,47,0.5);
 }
+.cal-row.next-row::after {
+  content: "▶ sljedeći";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--f-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.cal-row.next-row.moved::after { top: 30%; transform: none; }
 .cal-row.next-row .cr-day,
 .cal-row.next-row .cr-dy,
 .cal-row.next-row .cr-n { color: var(--clay); }
@@ -777,39 +793,60 @@ button { font: inherit; cursor: pointer; color: inherit; }
 /* MOVED: second line with reason */
 .cal-row.moved {
   grid-template-rows: auto auto;
-  padding-bottom: 9px;
+  padding-bottom: 10px;
 }
 .cal-row.moved .cr-day { color: var(--clay-d); }
-.cr-reason {
-  grid-column: 2 / -1;
+
+/* ↗ inline badge next to date */
+.cr-mv {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--ivory);
+  background: var(--clay);
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.02em;
+  align-self: center;
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+
+.cr-reason {
+  grid-column: 1 / -1;
+  font-family: var(--f-mono);
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--clay);
-  padding-top: 6px;
-  margin-top: 3px;
-  border-top: 1px dashed rgba(185,94,47,0.25);
+  letter-spacing: 0.02em;
+  color: var(--clay-d);
+  background: rgba(185,94,47,0.07);
+  border: 1px solid rgba(185,94,47,0.18);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  line-height: 1.3;
+  gap: 8px;
+  line-height: 1.4;
 }
 .cr-reason .crr-ico {
-  color: var(--clay-d);
-  font-weight: 700;
+  color: var(--clay);
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
 }
-.cr-reason .crr-tx { color: var(--ink-2); font-weight: 500; }
+.cr-reason .crr-tx { color: var(--ink-2); font-weight: 500; flex: 1; }
 .cr-reason .crr-tx strong { color: var(--clay-d); font-weight: 700; }
 .cr-reason .crr-orig {
   font-style: normal;
-  color: var(--ink-3);
+  color: var(--ink-4);
   font-weight: 500;
   text-decoration: line-through;
-  text-decoration-color: rgba(185,94,47,0.5);
-  margin-left: auto;
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  text-decoration-color: rgba(185,94,47,0.4);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* show-more dugmad i sakriveni redovi */
@@ -1049,9 +1086,8 @@ button { font: inherit; cursor: pointer; color: inherit; }
 }
 .p-s {
   font-family: var(--f-mono);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--ink-2);
-  text-align: right;
   letter-spacing: 0.02em;
   white-space: nowrap;
   width: 22%;
@@ -1060,32 +1096,69 @@ button { font: inherit; cursor: pointer; color: inherit; }
 .p-s .first {
   color: var(--clay);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
 }
+
+/* ── Prize place chips (pz) ─────────────────────────── */
+.pz {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  white-space: nowrap;
+  margin-right: 1px;
+}
+.pz-n {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ink-4);
+  letter-spacing: 0;
+}
+.pz-v {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  font-feature-settings: "tnum","lnum";
+}
+
+/* 1st regular — gold */
+.pz-1 .pz-n  { color: rgba(176,133,48,0.65); }
+.pz-1 .pz-v  { font-size: 18px; font-weight: 800; color: var(--gold); }
+
+/* 1st special — clay */
+.pz-s1 .pz-n { color: rgba(185,94,47,0.6); }
+.pz-s1 .pz-v { font-size: 15px; font-weight: 700; color: var(--clay); }
+
+/* other special */
+.pz-s .pz-n  { color: var(--ink-4); }
+.pz-s .pz-v  { color: var(--ink-2); font-size: 13px; }
 
 @media (max-width: 980px) { .main { grid-template-columns: 1fr; } }
 
 @media (max-width: 560px) {
   .cal-head, .cal-row {
-    grid-template-columns: 28px 1fr 60px 28px;
-    gap: 10px;
+    grid-template-columns: 28px 1fr 56px 26px;
+    gap: 8px;
   }
   .cal-head .ch-dur, .cr-dur { display: none; }
-  .cal-row { padding: 15px 4px; min-height: 62px; font-size: 17px; }
-  .cr-day { font-size: 27px; }
-  .cr-tempo { font-size: 16px; }
-  .cr-rd { font-size: 18px; }
+  .cal-row { padding: 14px 4px; min-height: 58px; font-size: 16px; }
+  .cr-day { font-size: 25px; }
+  .cr-tempo { font-size: 15px; }
+  .cr-rd { font-size: 17px; }
+  .cr-mv { font-size: 8px; padding: 1px 4px; }
 
-  .prize thead th { font-size: 12px; padding: 11px 6px 11px 0; }
+  .prize thead th { font-size: 11px; padding: 10px 5px 10px 0; }
   .prize thead th em { display: none; }
-  .prize tbody td { padding: 12px 6px 12px 0; }
-  .p-n { font-size: 24px; }
-  .p-f { font-size: 17px; }
-  .p-f em { font-size: 11px; }
-  .p-r { font-size: 14px; }
-  .p-r .first { font-size: 15px; }
-  .p-s { font-size: 13px; }
-  .p-s .first { font-size: 14px; }
+  .prize tbody td { padding: 11px 5px 11px 0; }
+  .p-n { font-size: 20px; width: 11%; }
+  .p-f { font-size: 15px; }
+  .p-f em { font-size: 10px; }
+  .pz-v { font-size: 12px; }
+  .pz-1 .pz-v { font-size: 15px; }
+  .pz-s1 .pz-v { font-size: 13px; }
+  .pz-n { font-size: 8px; }
 }
 
 /* ============================================
@@ -1998,7 +2071,8 @@ button { font: inherit; cursor: pointer; color: inherit; }
   .cal-row.next-row .cr-day, .cal-row.next-row .cr-dy, .cal-row.next-row .cr-n {
     color: #b95e2f !important;
   }
-  .cr-reason { color: #94481e !important; -webkit-print-color-adjust: exact; }
+  .cr-mv { background: #b95e2f !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+  .cr-reason { color: #94481e !important; background: rgba(185,94,47,0.07) !important; border-color: #b95e2f !important; -webkit-print-color-adjust: exact; }
 
   .dist { background: #fbf6e7 !important; border-color: #ccc !important; -webkit-print-color-adjust: exact; }
   .db { background: #eee !important; }
@@ -2011,10 +2085,12 @@ button { font: inherit; cursor: pointer; color: inherit; }
   .prize tbody td { padding: 5pt 4pt 5pt 0 !important; border-color: #ddd !important; }
   .p-n { color: #1f5240 !important; font-size: 14pt !important; }
   .p-f { font-size: 11pt !important; color: #000 !important; }
-  .p-r { font-size: 10pt !important; color: #000 !important; }
-  .p-r .first { color: #1f5240 !important; font-size: 11pt !important; }
+  .p-r { font-size: 9pt !important; color: #000 !important; }
+  .pz-v { font-size: 9pt !important; color: #000 !important; }
+  .pz-1 .pz-v { color: #b08530 !important; font-size: 11pt !important; -webkit-print-color-adjust: exact; }
+  .pz-s1 .pz-v { color: #b95e2f !important; font-size: 10pt !important; -webkit-print-color-adjust: exact; }
+  .pz-n { font-size: 7pt !important; color: #999 !important; }
   .p-s { font-size: 9pt !important; color: #000 !important; }
-  .p-s .first { color: #b95e2f !important; font-size: 10pt !important; }
   .p-fin { font-size: 8pt !important; color: #b08530 !important; }
   .prize-calc { display: none !important; }
   .finale-block { background: #fff !important; border-color: #999 !important; border-left-color: #b08530 !important; -webkit-print-color-adjust: exact; page-break-inside: avoid; }
